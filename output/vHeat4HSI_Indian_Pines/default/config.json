@@ -1,0 +1,99 @@
+AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: pixel
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BANDS: 200
+  BATCH_SIZE: 256
+  CACHE_MODE: part
+  DATASET: hsi
+  DATA_PATH: ./dataset/HSI_data
+  HSI_DATASET: Indian_Pines
+  IMG_SIZE: 224
+  INTERPOLATION: bicubic
+  NUM_CLASSES: 16
+  NUM_WORKERS: 8
+  PATCH_SIZE: 11
+  PIN_MEMORY: true
+  TRAIN_RATIO: 0.15
+  VAL_RATIO: 0.85
+  ZIP_MODE: false
+ENABLE_AMP: false
+EVAL_MODE: false
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: vHeat4HSI_Indian_Pines
+  NUM_CLASSES: 16
+  PRETRAINED: ''
+  RESUME: ''
+  TYPE: vHeat4HSI
+  VHEAT:
+    DEPTHS:
+    - 1
+    - 2
+    - 2
+    - 1
+    EMBED_DIM: 200
+    IN_CHANS: 3
+    LAYER_SCALE: null
+    MLP_RATIO: 2.0
+    PATCH_NORM: true
+    PATCH_SIZE: 4
+    POST_NORM: false
+OUTPUT: output/vHeat4HSI_Indian_Pines/default
+PRINT_FREQ: 10
+SAVE_FREQ: 10
+SEED: 42
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: false
+  BASE_LR: 0.0005
+  CLIP_GRAD: 5.0
+  EPOCHS: 600
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: cosine
+    WARMUP_PREFIX: true
+  MIN_LR: 2.5e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 20
+  WARMUP_LR: 2.5e-07
+  WEIGHT_DECAY: 0.05
+USE_DISTRIBUTED: false

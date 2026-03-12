@@ -1,0 +1,79 @@
+# 高光谱图像分类配置
+MODEL:
+  TYPE: vHeat
+  NAME: vHeat_hsi_tiny
+  NUM_CLASSES: 16  # 根据具体数据集修改
+  DROP_RATE: 0.0
+  DROP_PATH_RATE: 0.1
+  LABEL_SMOOTHING: 0.1
+
+  VHEAT:
+    PATCH_SIZE: 7  # 高光谱patch大小
+    IN_CHANS: 200  # 光谱波段数，根据数据集修改
+    EMBED_DIM: 96
+    DEPTHS: [2, 2, 6, 2]
+    MLP_RATIO: 4.
+    PATCH_NORM: True
+    POST_NORM: False
+    LAYER_SCALE: None
+
+DATA:
+  DATASET: hsi  # 使用高光谱数据集
+  HSI_DATASET: Indian_Pines  # 具体数据集名称
+  DATA_PATH: ./dataset/HSI_data  # 高光谱数据路径
+  BATCH_SIZE: 32
+  IMG_SIZE: 7  # patch大小
+  TRAIN_RATIO: 0.2  # 训练集比例
+  VAL_RATIO: 0.1    # 验证集比例
+  NUM_WORKERS: 4
+  PIN_MEMORY: True
+
+TRAIN:
+  EPOCHS: 100
+  START_EPOCH: 0
+  WARMUP_EPOCHS: 10
+  BASE_LR: 5.e-4
+  WARMUP_LR: 5.e-7
+  MIN_LR: 5.e-6
+  WEIGHT_DECAY: 0.05
+  ACCUMULATION_STEPS: 1
+  CLIP_GRAD: 5.0
+  AUTO_RESUME: True
+  USE_CHECKPOINT: False
+
+  LR_SCHEDULER:
+    NAME: 'cosine'
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    WARMUP_PREFIX: True
+
+  OPTIMIZER:
+    NAME: 'adamw'
+    EPS: 1e-8
+    BETAS: (0.9, 0.999)
+    MOMENTUM: 0.9
+
+AUG:
+  # 高光谱数据增强（可选）
+  COLOR_JITTER: 0.0
+  AUTO_AUGMENT: 'none'
+  REPROB: 0.0
+  REMODE: 'pixel'
+  RECOUNT: 1
+  MIXUP: 0.0
+  CUTMIX: 0.0
+  CUTMIX_MINMAX: None
+
+TEST:
+  CROP: False  # 高光谱不需要center crop
+  SEQUENTIAL: False
+  SHUFFLE: False
+
+SAVE_FREQ: 10
+PRINT_FREQ: 50
+OUTPUT: ./output_hsi
+SEED: 42
+AMP_ENABLE: True
+AMP_OPT_LEVEL: ''
+USE_DISTRIBUTED: False
+LOCAL_RANK: 0

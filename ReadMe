@@ -1,0 +1,4 @@
+训练命令：
+python main2.py --cfg configs/vHeat4HSI/vheat4hsi_indian_pines.yaml
+
+可以使用create_hsi_config.py进行模型参数的调整。
