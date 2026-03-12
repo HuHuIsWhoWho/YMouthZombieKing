@@ -1,0 +1,29 @@
+DATA:
+  BANDS: 103
+  BATCH_SIZE: 256
+  DATASET: hsi
+  DATA_PATH: ./dataset/HSI_data
+  HSI_DATASET: Pavia_University
+  PATCH_SIZE: 7
+  TRAIN_RATIO: 0.15
+  VAL_RATIO: 0.1
+MODEL:
+  NAME: vHeat4HSI_Pavia_University
+  NUM_CLASSES: 9
+  TYPE: vHeat4HSI
+  VHEAT:
+    DEPTHS:
+    - 1
+    - 2
+    - 2
+    - 1
+    EMBED_DIM: 103
+    MLP_RATIO: 2.0
+OUTPUT: ./output_hsi/Pavia_University
+PRINT_FREQ: 10
+SAVE_FREQ: 10
+SEED: 42
+TRAIN:
+  BASE_LR: 0.001
+  EPOCHS: 600
+  WEIGHT_DECAY: 0.05
