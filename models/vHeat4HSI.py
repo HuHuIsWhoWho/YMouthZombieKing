@@ -334,9 +334,9 @@ class AdditionalInputSequential(nn.Sequential):
 
 
 class vHeat4HSI(nn.Module):
-    def __init__(self, hsi_patch_size=7, hsi_band_size=200, num_classes=16, depths=[1, 2, 2, 1], 
+    def __init__(self, hsi_patch_size=11, hsi_band_size=200, num_classes=16, depths=[1, 2, 2, 1], 
                  dims=[160, 80, 40, 20], drop_path_rate=0.2, patch_norm=True, post_norm=True,
-                 layer_scale=None, use_checkpoint=False, mlp_ratio=4.0,
+                 layer_scale=None, use_checkpoint=False, mlp_ratio=2.0,
                  act_layer='GELU', infer_mode=False, **kwargs):
         super().__init__()
 
@@ -348,13 +348,12 @@ class vHeat4HSI(nn.Module):
         self.num_layers = len(depths)
 
         # 在光谱通道下采样
-        # if isinstance(dims, int):
-        #     dims = [int(dims * 2 ** i_layer) for i_layer in range(self.num_layers)]
         if isinstance(dims, int):
             dims = [int(dims // 2 ** i_layer) for i_layer in range(self.num_layers)]
         if isinstance(dims, float):
             dims = self.hsi_band_size * dims
             dims = [int(dims), int(dims//2), int(dims//4), int(dims//8)]
+
         self.embed_dim = dims[0]
         self.num_features = dims[-1]
         self.dims = dims
@@ -363,10 +362,6 @@ class vHeat4HSI(nn.Module):
 
         self.patch_embed = HSI_DWS_Stem(in_c=self.hsi_band_size, mid_c=self.hsi_band_size // 2, out_c=self.embed_dim)
 
-
-        # 高光谱时计算各层分辨率
-        # res0 = img_size/patch_size
-        # self.res = [int(res0), int(res0//2), int(res0//4), int(res0//8)]
         res0 = hsi_patch_size
         # 不在空间通道下采样
         self.res = [int(res0), int(res0), int(res0), int(res0)]
